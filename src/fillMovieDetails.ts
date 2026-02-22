@@ -9,6 +9,7 @@ export type MovieDetails = {
   director: string
   year: number
   group: string
+  /** YYYY/MM/DD HH:MM 24 hours format string */
   when: string
   summary: string
   imageURL: string

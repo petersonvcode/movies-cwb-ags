@@ -22,7 +22,7 @@ let browserSingleton: Browser | null = null;
 
 export const scrapeMoviesList = async () => {
   try {
-    browserSingleton = await chromium.launch({ headless: false, timeout });
+    browserSingleton = await chromium.launch({ headless: true, timeout });
     const content = await scrapeMovies(browserSingleton);
     
     fs.writeFileSync('movies.json', JSON.stringify(content, null, 2));

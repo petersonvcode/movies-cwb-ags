@@ -1,0 +1,113 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"};
+
+$wayland-bar-height: 26px;
+$wayland-bar-margin: 6px;
+
+.window {
+  background-color: transparent;
+}
+
+.outer-box {
+  color: $fg-color;
+  background: $bg-color;
+  
+  border-radius: 7px;
+  padding: 7px;
+
+  background-color: #221D2A;
+  color: #CCCBCA;
+}
+
+.close-button {
+  background-color: #221D2A;
+  color: #789DF3;
+  border-radius: 100%;
+  margin-left: 4px;
+  
+  :hover {
+    background-color: #151620;
+    color: #4861ad;
+    border-radius: 100%;
+  }
+}
+
+.top-box {
+  font-size: 14px;
+  font-weight: bold;
+
+  .top-box-text {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .close-button {
+    margin-left: auto;
+  }
+}
+
+.movie-card {
+  margin-bottom: 10px;
+  margin-right: 14px;
+  padding-left: 6px;
+  border-radius: 7px;
+  // background-color: #5E2C70;
+
+  .movie-title {
+    margin-right: 4px;
+    margin-top: 4px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .movie-director {
+    padding-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .movie-when {
+    margin-top: 4px;
+    font-size: 14x;
+    font-weight: bold;
+  }
+
+  .movie-group {
+    margin-top: 4px;
+    font-size: 13px;
+  }
+
+  .movie-synopsis {
+    margin-top: 6px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    margin-left: 2px;
+    font-size: 10px;
+  }
+
+  .movie-image {
+    background-color: #ffffff;
+    border-radius: 7px;
+
+    .outer-box {
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+    }
+  }
+
+  .movie-more-info-button {
+    margin-left: auto;
+    margin: 4px;
+
+    background-color: #5E2C70;
+    color: #CCCBCA;
+    border-radius: 100%;
+  }
+}
+
+.no-padding {
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+}

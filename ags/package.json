@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "dev": "find . -type f -not -path 'node_modules/*' -not -path './.*' | entr -r -s 'ags run app.ts'"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/petersonvcode/movies-waybar#readme",
+  "bugs": {
+    "url": "https://github.com/petersonvcode/movies-waybar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petersonvcode/movies-waybar.git"
+  },
+  "license": "ISC",
+  "author": "Peterson V Gama",
+  "type": "module",
+  "dependencies": {
+    "ags": "*",
+    "gnim": "*"
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2
+  }
+}
