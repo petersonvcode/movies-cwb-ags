@@ -1,4 +1,5 @@
-import { chromium, type Browser, type Locator, type Page } from 'playwright';
+#!/usr/bin/env node
+import { chromium, type Browser, type BrowserContext, type Locator, type Page } from 'playwright';
 import fs from 'fs';
 import { insertMovies } from './db.js';
 
@@ -22,12 +23,16 @@ let browserSingleton: Browser | null = null;
 
 export const scrapeMoviesList = async () => {
   try {
+    console.log('Scraping movies list ...')
     browserSingleton = await chromium.launch({ headless: true, timeout });
     const content = await scrapeMovies(browserSingleton);
+    console.log(`Scraped ${content.length} movies`)
     
-    fs.writeFileSync('movies.json', JSON.stringify(content, null, 2));
+    // fs.writeFileSync('movies.json', JSON.stringify(content, null, 2));
     // const content = JSON.parse(fs.readFileSync('movies.json', 'utf8')) as ScrappedMovie[];
+    console.log('Inserting movies into database ...')
     insertMovies(content);
+    console.log('Movies inserted into database')
 
     return content;
   } catch (error) {
@@ -46,14 +51,19 @@ const scrapeMovies = async (browser: Browser) => {
     let movies: ScrappedMovie[] = [];
   
     const url = `${baseUrl}/Evento/Listar/?pesquisa=cinemateca`
-    page = await browser.newPage();
+    // User agent and sesc-ch-ua are required to avoid being blocked by bot detection
+    const context = await browser.newContext({
+      userAgent: 'MeuPau/1337.420',
+      extraHTTPHeaders: { 'sec-ch-ua': '"MeDetectaAiKkkkkkk";v="1"' }
+    });
+    page = await context.newPage();
     await page.goto(url, { timeout });
     await page.waitForLoadState('networkidle', { timeout });
-    
+
     const allCards = page.locator('body > section:nth-child(7) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > div:nth-child(1) > div')
     if (!allCards)
       throw new Error('all cards div not found');
-  
+
     const moviesLocators = await allCards.all();
     const promises = moviesLocators.map(async (movieLocator, i) => {
       let response: ScrappedMovie | undefined;
@@ -61,7 +71,7 @@ const scrapeMovies = async (browser: Browser) => {
       let maxRetries = 3
       while (retries < maxRetries && !response) {
         try {
-          response = await parseMovieCard(browser, movieLocator)
+          response = await parseMovieCard(context, movieLocator)
         } catch (error) {
           console.log(`Error parsing movie card ${i} for the ${retries} time: ${error}`);
           retries++
@@ -91,7 +101,7 @@ const scrapeMovies = async (browser: Browser) => {
   }
 }
 
-const parseMovieCard = async (browser: Browser, cardLocator: Locator): Promise<ScrappedMovie | undefined> => {
+const parseMovieCard = async (context: BrowserContext, cardLocator: Locator): Promise<ScrappedMovie | undefined> => {
   let moreInfoPage: Page | null = null;
   try {
 
@@ -130,7 +140,7 @@ const parseMovieCard = async (browser: Browser, cardLocator: Locator): Promise<S
     }
     moreInfoURL = `${baseUrl}${moreInfoURL}`
   
-    moreInfoPage = await browser.newPage();
+    moreInfoPage = await context.newPage();
     await moreInfoPage.goto(moreInfoURL, { timeout });
     await moreInfoPage.waitForLoadState('networkidle', { timeout });
   
