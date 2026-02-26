@@ -21,4 +21,5 @@ init_default_config() {
   "barPollInterval": 30
 }
 EOF
+  mkdir -p ${CONFIG_FOLDER}/bin
 }

@@ -34,7 +34,7 @@ jobs:
         with:
           files: |
             movies-cwb-arch-x64.zip
-            bin/config.sh
+            bin/install.sh
 
       - name: Update latest tag
         run: git push origin ${GITHUB_SHA}:refs/tags/latest --force
@@ -46,4 +46,4 @@ jobs:
           name: Latest
           files: |
             movies-cwb-arch-x64.zip
-            bin/config.sh
+            bin/install.sh
