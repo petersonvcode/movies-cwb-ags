@@ -14,8 +14,6 @@ const width = 400
 const height = width * goldenRatio
 const titleHeight = 32
 
-const projectPath = '/home/pet/Work/repos/movies-waybar'
-
 export type MovieDetails = {
   id: string
   scraped_movie_id: string
@@ -36,8 +34,8 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
   const expandedPath = rawConfigPath.replace(/^~(?=\/|$)/, GLib.get_home_dir())
   const absoluteConfigPath = exec(['realpath', expandedPath])
   const config = getConfig(absoluteConfigPath)
+  const rawMoviesJson = createPoll("", config.barPollInterval * 60 * 1000, `bash -c "${config.binFolder}/get-waybar-content.sh"`)
 
-  const rawMoviesJson = createPoll("", config.barPollInterval * 60 * 1000, `bash -c ". ${projectPath}/bin/get-waybar-content.sh"`)
   return (
     <window
       class="window"
@@ -51,7 +49,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
     >
       <With value={rawMoviesJson}>
         {(moviesJson) => {
-          if (!moviesJson) return null
+          console.log('moviesJson', moviesJson + ' wtfff')
+          console.log(`bash -c "${absoluteConfigPath}/bin/get-waybar-content.sh"`)
+          if (!moviesJson) return <box></box>
           const parsed = JSON.parse(moviesJson) as MovieDetails[]
           const daysRange = parsed?.[0]?.days_ahead_to_check ?? 0
           return (

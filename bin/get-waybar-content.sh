@@ -2,10 +2,11 @@
 
 set -e
 
-PROJECT_PATH=/home/pet/Work/repos/movies-waybar
-DB_FILE=movies.db
-DB_URL="${PROJECT_PATH}/${DB_FILE}"
-DAYS_AHEAD_TO_CHECK=10
+CURRENT_DIR=$(dirname $(realpath $0))
+source ${CURRENT_DIR}/config.sh
+
+DB_URL=$(get_config | jq -r '.dbFile')
+DAYS_AHEAD_TO_CHECK=$(get_config | jq -r '.barDaysAheadToCheck')
 
 get_waybar_content() {
   query="
